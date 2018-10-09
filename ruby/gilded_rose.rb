@@ -20,13 +20,13 @@ class GildedRose
   private
 
   def special_check(name)
-    SPECIAL.include?(name) || name.match(/Conjured/)
+    SPECIAL.include?(name) || name.match(/#{SPECIAL[2]}/)
   end
 
   def special_update(item)
     brie_update(item) if item.name == SPECIAL.first
     passes_update(item) if item.name == SPECIAL.last
-    conjured_update(item) if item.name.match(/Conjured/)
+    conjured_update(item) if item.name.match(/#{SPECIAL[2]}/)
   end
 
   def brie_update(item)
