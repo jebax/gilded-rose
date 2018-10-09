@@ -27,14 +27,14 @@ class GildedRose
         end
       end
       if item.name != "Sulfuras, Hand of Ragnaros"
-        item.sell_in = item.sell_in - 1 # normal items get -1 sell_in
+        item.sell_in = item.sell_in - 1 # every item except Sulfuras gets -1 sell_in
       end
       if item.sell_in < 0 # starting block for items passed sell_in date
         if item.name != "Aged Brie"
           if item.name != "Backstage passes to a TAFKAL80ETC concert"
             if item.quality > 0
               if item.name != "Sulfuras, Hand of Ragnaros"
-                item.quality = item.quality - 1 # normal items decrease by -2 total if passed sell-by date
+                item.quality = item.quality - 1 # normal items decrease by -2 total if passed sell_in date
               end
             end
           else
@@ -42,7 +42,7 @@ class GildedRose
           end
         else
           if item.quality < 50
-            item.quality = item.quality + 1 # aged brie gets
+            item.quality = item.quality + 1 # aged brie gets + 2 quality when past sell_in date
           end
         end
       end
@@ -51,6 +51,9 @@ class GildedRose
   end
 
   private
+
+  def passes_update
+  end
 
   def quality_bounds_check(items)
     items.each do |item|
