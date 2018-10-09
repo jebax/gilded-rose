@@ -10,43 +10,33 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      special_update(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
-      if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
-        if item.name != "Sulfuras, Hand of Ragnaros"
-          item.quality = item.quality - 1 # normal items get -1 quality
-        end
-      else
-        item.quality = item.quality + 1 # special items get +1 by default
-      end
-      if item.name != "Sulfuras, Hand of Ragnaros"
-        item.sell_in = item.sell_in - 1 # every item except Sulfuras gets -1 sell_in
-      end
-      if item.sell_in < 0 # starting block for items passed sell_in date
-        if item.name != "Aged Brie"
-          if item.quality > 0
-            if item.name != "Sulfuras, Hand of Ragnaros"
-              item.quality = item.quality - 1 # normal items decrease by -2 total if passed sell_in date
-            end
-          end
-        else
-          if item.quality < 50
-            item.quality = item.quality + 1 # aged brie gets + 2 quality when past sell_in date
-          end
-        end
-      end
+      item.sell_in -= 1 unless item.name == "Sulfuras, Hand of Ragnaros"
+      special_update(item) if SPECIAL.include? item.name
+      normal_update(item) unless SPECIAL.include? item.name
     end
     quality_bounds_check(@items)
   end
 
   private
 
+  def normal_update(item)
+    item.sell_in > 0 ? item.quality -= 1 : item.quality -= 2
+  end
+
   def special_update(item)
-    passes_update(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
+    brie_update(item) if item.name == SPECIAL.first
+    passes_update(item) if item.name == SPECIAL.last
+  end
+
+  def brie_update(item)
+    item.quality += 1
+    item.quality += 1 if item.sell_in < 0
   end
 
   def passes_update(item)
-    item.quality += 1 if item.sell_in < 11 # +1 runs again for < 11 sell_in, so +2 total
-    item.quality += 1 if item.sell_in < 6 # +1 runs twice for < 6 sell_in, so +3 total
+    item.quality += 1 if item.sell_in > 10
+    item.quality += 2 if item.sell_in <= 10
+    item.quality += 1 if item.sell_in <= 5
     item.quality = 0 if item.sell_in <= 0
   end
 
