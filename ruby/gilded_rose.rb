@@ -30,8 +30,7 @@ class GildedRose
   end
 
   def brie_update(item)
-    item.quality += 1
-    item.quality += 1 if item.sell_in < 0
+    item.sell_in > 0 ? item.quality += 1 : item.quality += 2
   end
 
   def passes_update(item)
