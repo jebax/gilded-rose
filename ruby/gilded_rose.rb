@@ -19,10 +19,6 @@ class GildedRose
 
   private
 
-  def normal_update(item)
-    item.sell_in > 0 ? item.quality -= 1 : item.quality -= 2
-  end
-
   def special_check(name)
     SPECIAL.include?(name) || name.match(/Conjured/)
   end
@@ -47,6 +43,10 @@ class GildedRose
 
   def conjured_update(item)
     item.sell_in > 0 ? item.quality -= 2 : item.quality -= 4
+  end
+
+  def normal_update(item)
+    item.sell_in > 0 ? item.quality -= 1 : item.quality -= 2
   end
 
   def quality_bounds_check(items)
