@@ -36,4 +36,30 @@ describe GildedRose do
     end
   end
 
+  describe "#passes_update" do
+    it 'should increase quality of pass with 20 days before sell_in by 1' do
+      items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 20, 45)]
+      GildedRose.new(items).update_quality
+      expect(items.first.quality).to eq 46
+    end
+
+     it 'should increase quality of pass with 10 days before sell_in by 2' do
+       items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 10, 45)]
+       GildedRose.new(items).update_quality
+       expect(items.first.quality).to eq 47
+     end
+
+     it 'should increase quality of pass with 5 days before sell_in by 3' do
+       items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 5, 45)]
+       GildedRose.new(items).update_quality
+       expect(items.first.quality).to eq 48
+     end
+
+     it 'should set quality of pass to 0 if sell_in date has passed' do
+       items = [Item.new("Backstage passes to a TAFKAL80ETC concert", 0, 45)]
+       GildedRose.new(items).update_quality
+       expect(items.first.quality).to eq 0
+     end
+  end
+
 end
