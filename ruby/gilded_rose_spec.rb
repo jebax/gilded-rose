@@ -4,12 +4,11 @@ require 'pry'
 
 describe GildedRose do
   def update(items)
-    GildedRose.new(items).update_quality
+    GildedRose.new(items).update_stock
   end
 
   let(:special_items) { [Item.new("Aged Brie", 5, 45),
                          Item.new("Sulfuras, Hand of Ragnaros", 5, 45),
-                         Item.new("Conjured", 5, 45),
                          Item.new("Backstage passes to a TAFKAL80ETC concert", 20, 45)]
   }
 
@@ -103,7 +102,7 @@ describe GildedRose do
 
   context "item is normal" do
     it 'should reduce quality by 1' do
-      GildedRose.new(normal_items).update_quality
+      GildedRose.new(normal_items).update_stock
       expect(normal_items.map(&:quality)).to eq [9, 18]
     end
 
@@ -114,7 +113,7 @@ describe GildedRose do
     end
   end
 
-  describe "#update_quality" do
+  describe "#update_stock" do
     it "does not change the name" do
       items = [Item.new("foo", 0, 0)]
       update(items)

@@ -1,7 +1,6 @@
 class GildedRose
   SPECIAL = ["Aged Brie",
              "Sulfuras, Hand of Ragnaros",
-             "Conjured",
              "Backstage passes to a TAFKAL80ETC concert"]
 
   def initialize(items)
@@ -9,28 +8,40 @@ class GildedRose
     @items = items
   end
 
-  def update_quality()
-    @items.each do |item|
-      item.sell_in -= 1 unless item.name == SPECIAL[1]
-      special_check(item.name) ? special_update(item) : normal_update(item)
-    end
-    quality_bounds_check(@items)
+  def update_stock
+    update_sell_in
+    update_quality
   end
 
   private
 
+  def update_sell_in
+    @items.each do |item|
+      item.sell_in -= 1 unless item.name == "Sulfuras, Hand of Ragnaros"
+    end
+  end
+
+  def update_quality()
+    @items.each do |item|
+      normal_update(item) unless special_check(item.name)
+      special_update(item) if special_check(item.name)
+    end
+    quality_bounds_check(@items)
+  end
+
   def special_check(name)
-    SPECIAL.include?(name) || name.match(/#{SPECIAL[2]}/)
+    SPECIAL.include?(name) || name.match(/Conjured/)
   end
 
   def special_update(item)
-    brie_update(item) if item.name == SPECIAL.first
-    passes_update(item) if item.name == SPECIAL.last
-    conjured_update(item) if item.name.match(/#{SPECIAL[2]}/)
+    brie_update(item) if item.name == "Aged Brie"
+    passes_update(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
+    conjured_update(item) if item.name.match(/Conjured/)
   end
 
   def brie_update(item)
-    item.sell_in > 0 ? item.quality += 1 : item.quality += 2
+    item.quality += 1
+    item.quality += 1 if item.sell_in <= 0
   end
 
   def passes_update(item)
@@ -41,11 +52,13 @@ class GildedRose
   end
 
   def conjured_update(item)
-    item.sell_in > 0 ? item.quality -= 2 : item.quality -= 4
+    item.quality -= 2
+    item.quality -= 2 if item.sell_in <= 0
   end
 
   def normal_update(item)
-    item.sell_in > 0 ? item.quality -= 1 : item.quality -= 2
+    item.quality -= 1
+    item.quality -= 1 if item.sell_in <= 0
   end
 
   def quality_bounds_check(items)
