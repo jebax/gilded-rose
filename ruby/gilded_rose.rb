@@ -1,4 +1,7 @@
 class GildedRose
+  SPECIAL = ["Aged Brie",
+             "Sulfuras, Hand of Ragnaros",
+             "Backstage passes to a TAFKAL80ETC concert"]
 
   def initialize(items)
     quality_bounds_check(items)
@@ -7,7 +10,7 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      passes_update(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
+      special_update(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
         if item.name != "Sulfuras, Hand of Ragnaros"
           item.quality = item.quality - 1 # normal items get -1 quality
@@ -36,6 +39,10 @@ class GildedRose
   end
 
   private
+
+  def special_update(item)
+    passes_update(item) if item.name == "Backstage passes to a TAFKAL80ETC concert"
+  end
 
   def passes_update(item)
     item.quality += 1 if item.sell_in < 11 # +1 runs again for < 11 sell_in, so +2 total

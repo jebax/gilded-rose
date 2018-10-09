@@ -1,6 +1,10 @@
 require File.join(File.dirname(__FILE__), 'gilded_rose')
 
 describe GildedRose do
+  let(:special_items) { [Item.new("Aged Brie", 5, 45),
+                         Item.new("Sulfuras, Hand of Ragnaros", 5, 45),
+                         Item.new("Backstage passes to a TAFKAL80ETC concert", 20, 45)]
+  }
 
   describe "#initialize" do
     it "forces item to start with max quality of 50" do
@@ -13,6 +17,12 @@ describe GildedRose do
       items = [Item.new("foo", 0, -1)]
       GildedRose.new(items)
       expect(items.first.quality).to eq 0
+    end
+  end
+
+  context "item is special" do
+    it 'should have an unchanging list of special items' do
+      expect(described_class::SPECIAL).to eq special_items.map(&:name)
     end
   end
 
