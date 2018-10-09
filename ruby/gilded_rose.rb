@@ -11,7 +11,7 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      item.sell_in -= 1 unless item.name == "Sulfuras, Hand of Ragnaros"
+      item.sell_in -= 1 unless item.name == SPECIAL[1]
       special_check(item.name) ? special_update(item) : normal_update(item)
     end
     quality_bounds_check(@items)
