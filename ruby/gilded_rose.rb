@@ -1,5 +1,10 @@
 class GildedRose
+  SPECIAL = ["Aged Brie",
+             "Sulfuras, Hand of Ragnaros",
+             "Backstage passes to a TAFKAL80ETC concert"]
+
   def initialize(items)
+    quality_bounds_check(items)
     @items = items
   end
 
