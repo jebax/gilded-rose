@@ -23,8 +23,11 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      normal_update(item) unless special_check(item.name)
-      special_update(item) if special_check(item.name)
+      if special_check(item.name)
+        special_update(item)
+      else
+        normal_update(item)
+      end
     end
     quality_bounds_check(@items)
   end
