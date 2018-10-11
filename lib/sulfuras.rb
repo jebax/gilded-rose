@@ -1,8 +1,8 @@
-class LegendaryItem
+class Sulfuras
   attr_reader :name, :sell_in, :quality
 
-  def initialize(name, sell_in, quality)
-    @name = name
+  def initialize(sell_in, quality)
+    @name = "Sulfuras, Hand of Ragnaros"
     @sell_in = sell_in
     @quality = quality
     quality_bounds_check
