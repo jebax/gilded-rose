@@ -1,7 +1,7 @@
 require_relative 'item'
 require_relative 'item_checks'
 
-class Yulfuras
+class Normal
   include ItemChecks
 
   def initialize(name, sell_in, quality)
@@ -28,8 +28,11 @@ class Yulfuras
   private
 
   def update_sell_in
+    @item.sell_in -= 1
   end
 
   def update_quality
+    @item.quality -= 1
+    @item.quality -= 1 if @item.sell_in <= 0
   end
 end

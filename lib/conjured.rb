@@ -1,14 +1,25 @@
+require_relative 'item'
+require_relative 'item_checks'
+
 class Conjured
-  attr_reader :name, :sell_in, :quality
+  include ItemChecks
 
   def initialize(name, sell_in, quality)
-    @name = "Conjured #{name}"
-    @sell_in = sell_in
-    @quality = quality
+    @item = Item.new("Conjured #{name}", sell_in, quality)
     quality_bounds_check
+    @update_behaviour
+  end
+
+  def item
+    @item.dup
   end
 
   def update
+    check_update_behaviour
+    @update_behaviour
+  end
+
+  def class_update
     update_sell_in
     update_quality
     quality_bounds_check
@@ -17,16 +28,11 @@ class Conjured
   private
 
   def update_sell_in
-    @sell_in -= 1
+    @item.sell_in -= 1
   end
 
   def update_quality
-    @quality -= 2
-    @quality -= 2 if sell_in <= 0
-  end
-
-  def quality_bounds_check
-    @quality = 50 if quality > 50
-    @quality = 0 if quality < 0
+    @item.quality -= 2
+    @item.quality -= 2 if @item.sell_in <= 0
   end
 end

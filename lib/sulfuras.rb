@@ -1,16 +1,28 @@
-class Sulfuras
-  attr_reader :name, :sell_in, :quality
+require_relative 'item'
+require_relative 'item_checks'
 
-  def initialize(sell_in, quality)
-    @name = "Sulfuras, Hand of Ragnaros"
-    @sell_in = sell_in
-    @quality = quality
+class Sulfuras
+  include ItemChecks
+
+  def initialize(name, sell_in, quality)
+    @item = Item.new(name, sell_in, quality)
     quality_bounds_check
+    @update_behaviour
+  end
+
+  def item
+    @item.dup
   end
 
   def update
+    check_update_behaviour
+    @update_behaviour
+  end
+
+  def class_update
     update_sell_in
     update_quality
+    quality_bounds_check
   end
 
   private
@@ -19,10 +31,5 @@ class Sulfuras
   end
 
   def update_quality
-  end
-
-  def quality_bounds_check
-    @quality = 50 if @quality > 50
-    @quality = 0 if @quality < 0
   end
 end

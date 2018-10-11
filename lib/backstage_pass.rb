@@ -1,14 +1,25 @@
-class BackstagePass
-  attr_reader :name, :sell_in, :quality
+require_relative 'item'
+require_relative 'item_checks'
 
-  def initialize(sell_in, quality)
-    @name = "Backstage pass to a TAFKAL80ETC concert"
-    @sell_in = sell_in
-    @quality = quality
+class BackstagePass
+  include ItemChecks
+
+  def initialize(name, sell_in, quality)
+    @item = Item.new(name, sell_in, quality)
     quality_bounds_check
+    @update_behaviour
+  end
+
+  def item
+    @item.dup
   end
 
   def update
+    check_update_behaviour
+    @update_behaviour
+  end
+
+  def class_update
     update_sell_in
     update_quality
     quality_bounds_check
@@ -17,18 +28,13 @@ class BackstagePass
   private
 
   def update_sell_in
-    @sell_in -= 1
+    @item.sell_in -= 1
   end
 
   def update_quality
-    @quality += 1
-    @quality += 1 if sell_in <= 10
-    @quality += 1 if sell_in <= 5
-    @quality = 0 if sell_in <= 0
-  end
-
-  def quality_bounds_check
-    @quality = 50 if quality > 50
-    @quality = 0 if quality < 0
+    @item.quality += 1
+    @item.quality += 1 if @item.sell_in <= 10
+    @item.quality += 1 if @item.sell_in <= 5
+    @item.quality = 0 if @item.sell_in <= 0
   end
 end
